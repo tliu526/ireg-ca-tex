@@ -45,19 +45,6 @@
 %For increasing the space allowed for floats
 \renewcommand\floatpagefraction{0.9}
 
-%\usepackage{multido}
-
-%\usepackage{subfig}
-
-%For flowcharts
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows}
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{arrow} = [thick,->,>=stealth]
-
 \usepackage[titletoc, title]{appendix}
 \renewcommand{\appendix}{%
   \par
@@ -69,16 +56,19 @@
 \usepackage{graphicx}
 \graphicspath{{../figures/}}
 
-%endfloat
+%endfloat, for placing figures at the end
 \usepackage[nomarkers,nofiglist,fighead]{endfloat}
 \renewcommand{\efloatseparator}{\mbox{}}
 
+% line spacing
 \onehalfspacing
 
+% tab spacing
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
 
-\begin{document}
 
+% START OF DOCUMENT
+\begin{document}
 \pagenumbering{roman}
 
 \begin{flushleft}
@@ -272,16 +262,22 @@ We have seen throughout this review that work on the computational dynamics of d
 \label{sec:System}
 
 \subsection{Architecture Overview}
-Our CA simulation platform follows an event-driven architecture written in C++; actions are placed on a queue and are performed one at a time. The event queue structure allows us to easily interleave actions in between time steps of a CA simulation; for example, we can take snapshots of the grid state or dump measurements to a file in between time steps at any frequency we wish.
+Our CA simulation platform was designed primarily with flexibility in mind. 
+It follows an event-driven architecture written in C++; actions are placed on a queue and are performed one at a time. 
+The event queue structure allows us to easily interleave actions in between time steps of a CA simulation; for example, we can take snapshots of the grid state or dump measurements to a file in between time steps at any frequency we wish. 
+Modular components and data structures can easily be swapped in and out of the simulation platform, giving us fine-grained control over the experiments we are running. 
 
-%TODO move around?
-We designed this system primarily with flexibility in mind. Modular components and data structures can easily be swapped in and out of the simulation platform, giving us fine-grained control over the experiments we are running. Performance is not a major concern, so long as simulations and experiments can complete within a reasonable amount of time: for reference an experiment that runs 1,000 simulations 500 time steps each, writing data to disk at every time step for all simulations takes a few hours in total to complete.
+Termination of the CA simulation occurs either when a maximum time step is reached, or when a grid state is repeated. 
+We track grid states by walking through all cells on a grid in a consistent order, appending each cell state to a string array and then passing the resulting string through a hash function. 
+We keep a history of these hashes along with the time step they occur, and terminate the simulation if a hash is ever repeated. 
+Recording the time step also allows us to track the periodicity of any potential oscillating structures occurring within the simulation.
 
-%A CA simulation begins by reading in an input grid file, initializing all 
-
-Termination of the CA simulation occurs either when a maximum time step is reached, or when a grid state is repeated. We track grid states by walking through all cells on a grid in a consistent order, appending each cell state to a string array and then passing the resulting string through a hash function. We keep a history of these hashes along with the time step they occur, and terminate the simulation if a hash is ever repeated. Recording the time step also allows us to track the periodicity of any potential oscillating structures occurring within the simulation.
-
-We execute rule table updates across the grid in a ``spreading activation'' fashion in order to increase the performance of the simulator. Instead of visiting and updating each cell, we track which cells changed state in the previous time step and place those cells along with their neighbors in a \textit{change} list. When updating the graph for the next time step, we only apply the transition rule to cells in the list. We then repeat this process, updating the list with any cells and their neighbors that have changed state. We initialize the change list at the beginning of the simulation to all cells in the grid. This method of applying updates allows us to only consider cells that could potentially change, saving time throughout the CA simulation especially if the grid is large. 
+We execute rule table updates across the grid in a ``spreading activation'' fashion in order to increase the performance of the simulator. 
+Instead of visiting and updating each cell, we track which cells changed state in the previous time step and place those cells along with their neighbors in a \textit{change} list. 
+When updating the graph for the next time step, we only apply the transition rule to cells in the list. 
+We then repeat this process, updating the list with any cells and their neighbors that have changed state. 
+We initialize the change list at the beginning of the simulation to all cells in the grid. 
+This method of applying updates allows us to only consider cells that could potentially change, saving time throughout the CA simulation especially if the grid is large. 
 
 \subsection{Grid Generation}
 \label{subsec:GridGen}
@@ -313,7 +309,7 @@ The first step in the process to generate a Voronoi-based grid is to produce gen
 \label{fig:pt_gen}
 \end{figure}
 
-Once we have a set of generator points, we construct the dual graph of the Voronoi Diagram, known as the \textit{Delaunay Triangulation}. The Delaunay Triangulation of a set of points $\{p_1, ..., p_n\}$ in the plane is a triangulation such that no point $p_k$ resides inside the circumcircle of a triangle. We utilize the {\sc Flip Algorithm} to construct the Delaunay Triangulation; though the flip algorithm is not the fastest Delaunay Triangulation algorithm, it is straightforward to implement, requires no auxiliary data structures, and performs well enough for our purposes.
+Once we have a set of generator points, we construct the dual graph of the Voronoi Diagram, known as the \textit{Delaunay Triangulation}. The Delaunay Triangulation of a set of points $\{p_1, ..., p_n\}$ in the plane is a triangulation such that no point $p_k$ resides inside the circumcircle of a triangle. We utilize the \textit{Flip Algorithm} to construct the Delaunay Triangulation; though the flip algorithm is not the fastest Delaunay Triangulation algorithm, it is straightforward to implement, requires no auxiliary data structures, and performs well enough for our purposes.
 
 Given a Delaunay Triangulation, we can produce its corresponding Voronoi Diagram by calculating the circumcenter of each Delaunay triangle and creating an edge between the circumcenters of adjacent triangles~\cite{de11,ed08}. The circumcenters of the triangles correspond to Voronoi polygon vertices, so we obtain valid Voronoi regions. Thus we have obtained both the graph representation and the geometric representation of a Voronoi-based grid. An illustration of this process is shown in Figure \ref{fig:voronoi_gen}.
 
@@ -381,7 +377,7 @@ As noted in Section \ref{subsec:vquad}, VQuad grid generation is dependent on th
 
 \subsubsection{Crosshatching Degeneration}
 \label{subsec:ch_degen}
-Though generator point removal provides a simple way to degrade a grid, we wanted finer-grained control over how points and edges are removed. Thus we devised a manner of degradation that allowed us to specify what local regions of the grid would be disconnected from other portions of the grid. This basic premise is to draw vertical and horizontal lines at regular width $w$ intervals apart that subdivide the irregular grid roughly into square lattice regions. Cell edges that intersect these \textit{crosshatchings} are removed from the grid with some probability $p$: cells that were formerly connected by the edge no longer are neighbors in the graph representation of the grid. Thus at $p=1.0$ we would have completely isolated ``islands'' of grid subregions. This \textit{crosshatching degeneration} technique allows us control over the degree of regional connectivity, as pictured in Figure \ref{fig:crosshatch_degen}. This manner of degradation preserves the number of cells present in the grid, instead introducing degradation by decreasing edge adjacency. Though we primarily use crosshatching degeneration as a form of edge removal, this technique also gives us a way to control generator point removal: since the crosshatchings define a square lattice partitioning of the grid, we can also choose square regions to remove with some probability $p$. Any generator points sitting within the boundary of a chosen square region will be removed from the graph. Thus we can control both the frequency of generator points removed (through adjusting $p$) as well as the average size of the of the regions removed (through adjusting $w$). This crosshatching technique allows us to parameterize the degeneration of a grid beyond simply measuring average neighborhood size.
+Though generator point removal provides a simple way to degrade a grid, we wanted finer-grained control over how points and edges are removed. We devised a manner of degradation that allowed us to specify what local regions of the grid would be disconnected from other portions of the grid. This basic premise is to draw vertical and horizontal lines at regular width $w$ intervals apart that subdivide the irregular grid roughly into square lattice regions. Cell edges that intersect these \textit{crosshatchings} are removed from the grid with some probability $p$: cells that were formerly connected by the edge no longer are neighbors in the graph representation of the grid. Thus at $p=1.0$ we would have completely isolated ``islands'' of grid subregions. This \textit{crosshatching degeneration} technique allows us control over the degree of regional connectivity, as pictured in Figure \ref{fig:crosshatch_degen}. This manner of degradation preserves the number of cells present in the grid, instead introducing degradation by decreasing edge adjacency. Though we primarily use crosshatching degeneration as a form of edge removal, this technique also gives us a way to control generator point removal: since the crosshatchings define a square lattice partitioning of the grid, we can also choose square regions to remove with some probability $p$. Any generator points sitting within the boundary of a chosen square region will be removed from the graph. Thus we can control both the frequency of generator points removed (through adjusting $p$) as well as the average size of the of the regions removed (through adjusting $w$). This crosshatching technique allows us to parameterize the degeneration of a grid beyond simply measuring average neighborhood size.
 
 \begin{figure}[htp]
 \centering
@@ -397,16 +393,11 @@ Though generator point removal provides a simple way to degrade a grid, we wante
 \label{subsec:ch3_lamb}
 %wolfram command is: rotations with 4 beads, 8 colors
 %TODO Burnside's lemma?
-In the $\lambda$ experiments performed by \citeauthor{wo90}, rule tables must be \textit{isotropic}: all planar rotations of a particular neighborhood configuration map to the same output cell state. This condition removes the global property of spatial orientation from influencing rule transitions~\cite{av00,wo90}. As a result, what would be a $K^N$ sized table results in a smaller table because only rotationally distinct neighborhood configurations are unique entries: specifically, if we consider the $K=8$, $N=5$ case the rule table of size $8^5 = 32,768$ is reduced to a rule table of size $8,352$ (see Appendix \ref{appB:rot} for calculation). To generate these tables, we iterate over all $K^N$ possible neighborhood values, canonicalize their string representations by finding their \textit{lexicographically minimal rotation}, and track only the unique neighborhoods. For example, in the $K=8, N=5$ case, neighborhoods ``0110'' and ``1001'' map to the same minimal rotation neighborhood of ``0011''. We then append a center state value to the end of this canonical neighborhood representation, thus creating the keys for our $\lambda$ rule table mapping with the output state for that particular neighborhood configuration as the value.
+In the $\lambda$ experiments performed by \citeauthor{wo90}, rule tables must be \textit{isotropic}: all planar rotations of a particular neighborhood configuration map to the same output cell state. This condition removes the global property of spatial orientation from influencing rule transitions~\cite{av00,wo90}. As a result, what would be a $K^N$ sized table results in a smaller table because only rotationally distinct neighborhood configurations are unique entries. To generate these tables, we iterate over all $K^N$ possible neighborhood values, canonicalize their string representations by finding their \textit{lexicographically minimal rotation}, and track only the unique neighborhoods. For example, in the $K=8, N=5$ case, neighborhoods ``0110'' and ``1001'' map to the same minimal rotation neighborhood of ``0011''. We then append a center state value to the end of this canonical neighborhood representation, thus creating the keys for our $\lambda$ rule table mapping with the output state for that particular neighborhood configuration as the value.
 
-Rule tables must also be \textit{strongly quiescent} in that a neighborhood configuration that consists entirely of the quiescent state must map to the quiescent state. This condition is satisfied by simply initializing the appropriate entry in the transition table and then ensuring that entry is not modified throughout a given experiment run.
-
-\subsection{Summary}
-We built a CA simulation system that is both modular and extensible. Our system performs sufficiently well to run a gamut of CA experiments within a reasonable amount of time. The system is also flexible enough so that we can make changes to any portion of the system through implementing various derived classes, and the command line interface allows us to easily tweak experiment parameters without having to change the source code.
+Rule tables must also be \textit{strongly quiescent} in that a neighborhood configuration that consists entirely of the quiescent state must map to the quiescent state. This condition is satisfied by initializing the appropriate entry in the transition table and then ensuring that entry is not modified throughout a given experiment run.
 
 %\processdelayedfloats
-
-\iffalse
 
 \section{Local Majority Experiments}
 \label{sec:local_maj}
@@ -584,13 +575,12 @@ The results for local majority task performance on ``hard'' configurations on bo
 \label{fig:lm_ff}
 \end{figure}
 
+\subsection{Summary}
 We have evaluated local majority task performance on both regular grids and irregular Voronoi grids. The profiles of the performance graphs show remarkable similarities between the regular and irregular grids in majority task performance. These similarities continue when we examine the impact of state noise, though the irregular grids perform slightly worse than the regular grids when noise is introduced. Still, we see that small amounts of state noise \textit{improve} task performance in both the regular and irregular grid cases, with their overall classification percentages rivaling those of more complex, human-engineered majority task rule tables.
 
 Thus, we see more evidence that randomness can facilitate the function of decentralized dynamic systems, and it seems plausible that biological systems utilizing local communication can overcome spatial irregularity and perform comparably to ``perfect'' CA systems even in noisy environments. Again, we see some evidence that spatially irregular grids can be functionally equivalent to their regular counterparts within a specific CA task domain.
 
 %\processdelayedfloats
-
-% CHAPTER 6
 
 \section{Lambda Degradation Experiments}
 \label{sec:lambda_degen}
@@ -1168,8 +1158,6 @@ H = -\left[ v \log v + 7\left(\frac{1-v}{7}\right)\log\left(\frac{1-v}{7}\right)
 \processdelayedfloats
 
 \newpage
-
-\fi
 
 \bibliographystyle{plainnat}
 \bibliography{references}

@@ -9,6 +9,15 @@
 
 __More recent entries are at the top.__
 
+##11-15-2016
+
+Tony's Work:
+- Compressed System Design to 2.5 pages, total 18 pages of text
+- Began some work with Power Law Spectral Density (me07, pe04)
+
+Thoughts:
+- Should figure captions be compressed as well?
+- Should the figures remain at the end of the document or should they be inline?
 
 ##11-14-2016
 
