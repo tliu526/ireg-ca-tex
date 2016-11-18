@@ -101,8 +101,7 @@ Dynamic natural systems have the ability to perform complex tasks that resemble 
 
 One of the main motivating examples of emergent natural computation we have been examining is plant cell stomatal coordination. These dynamic pores control gas exchange within the plant and ``solve'' a constrained optimization problem without a central communication system. What is remarkable about stomata is that their behavior is statistically indistinguishable from the behavior of CAs that solve the \textit{majority problem}: a global coordination task where all cells in the CA need to converge to the majority state of the initial  configuration~\cite{mo07,pe04, we11}. Furthermore, the corresponding majority task automata have been shown to respond robustly in the face of variations in their environment such as state noise, much like their biological counterparts~\cite{me07}. This relationship is exciting because it has been shown that computation in CAs can only occur under specific conditions, existing at a \textit{critical point} between ordered and chaotic behavior~\cite{la90, wf86}. Thus, perhaps we could begin to understand how computation emerges in nature given their established connection with CAs. However, the automata models built to study natural systems like plant stomata make a potentially limiting assumption: regularity of both the cellular grid and the local connections. Dynamic systems in nature certainly do not appear in a uniformly connected lattice. Like their surrounding environment, the spatial orientation of these systems are noisy and prone to irregularities. While some work investigates the effects of nonuniform grids such as Voronoi diagrams or Penrose tilings on automata performance~\cite{ca06,fl01,hi05}, further study is needed to ensure that our models of computation can safely be ``mapped'' to the systems occurring in nature.
 
-With these considerations in mind, this work pursues a deeper exploration of irregular computing CAs. Here, we conduct a series of experiments on a spectrum of automata with irregular grids and connectivities, quantifying their behavior and comparing them to traditional CAs. As noted earlier, computation appears to emerge at a point of criticality somewhere in between the ordered and chaotic automata and \citeauthor{la90}'s $\lambda$ parameter, representing the relative order of a CA, is used to parametrize the possible automata space~\cite{la90}. The $\lambda$ parameter is important because it is an indicator of the class of CAs that have the ability to compute~\cite{wo90}. However, this measure is tuned specifically for static neighborhood definitions and uniform grids. With the experimentation on irregular automata, the goal is to explore and develop a more general notion of $\lambda$ and other metrics so that we can better understand and perhaps even quantify the conditions in which computation can emerge in noisy systems. Another important question we address with this work is whether there is a \textit{qualitative} difference between regular and irregular grid patterns and connectivities: are there cases where uniform CA models are sufficient for representing biological systems? 
-% As materiality is also a characteristic of natural systems that typical automata models neglect~\cite{hu07}, we plan on conducting experiments on material-constrained CAs as well. 
+With these considerations in mind, this work pursues a deeper exploration of irregular computing CAs. Here, we conduct a series of experiments on a spectrum of automata with irregular grids and connectivities, quantifying their behavior and comparing them to traditional CAs. As noted earlier, computation appears to emerge at a point of criticality somewhere in between the ordered and chaotic automata and \citeauthor{la90}'s $\lambda$ parameter, representing the relative order of a CA, is used to parametrize the possible automata space~\cite{la90}. The $\lambda$ parameter is important because it is an indicator of the class of CAs that have the ability to compute~\cite{wo90}. However, this measure is tuned specifically for static neighborhood definitions and uniform grids. With the experimentation on irregular automata, the goal is to explore and develop a more general notion of $\lambda$ and other metrics so that we can better understand and perhaps even quantify the conditions in which computation can emerge in noisy systems. 
 
 We believe that the study of CA behavior in irregular environments is critical to achieve a greater understanding of how biological systems combat imperfections. Ultimately, the contribution of our work on natural computational systems is twofold: not only can we achieve a better understanding of how some biological processes operate, but our knowledge of how these systems work can inspire alternative computing methods~\cite{ma96, si04}. The hope is to illuminate how nature is able to perform complex computation in noisy environments and apply these lessons to advance robust computing models.
 
@@ -151,16 +150,17 @@ When considering the majority task, most initial configurations are relatively e
 \subsection{Metrics and Definitions}
 \label{subsec:metrics}
 \subsubsection*{Cellular Automata}
-We will begin with a formal definition of a cellular automaton~\cite{la90}. A CA is composed of a lattice of dimension $D$ with a finite automaton present in each cell of the lattice. There is a finite neighborhood region $\mathcal{N}$, where $N = |\mathcal{N}|$ is the number of cells covered in the neighborhood region. Typical neighborhood stencils for two-dimensions are the five-cell \textit{von Neumann neighborhood} and the nine-cell \textit{Moore neighborhood} (Figure \ref{fig:neighborhoods}). Each cell contains a finite set of cell states $\Sigma$ of size $K = |\Sigma|$ and a transition function $\Delta$ that maps a set of neighborhood configurations to the cell states: $\Delta: \Sigma^N \to \Sigma$. We typically characterize a particular class of cellular automata by the number of neighbors $N$ and the number of cell states $K$. 
+We will begin with a formal definition of a cellular automaton~\cite{la90}. A CA is composed of a lattice of dimension $D$ with a finite automaton present in each cell of the lattice. There is a finite neighborhood region $\mathcal{N}$, where $N = |\mathcal{N}|$ is the number of cells covered in the neighborhood region. Typical neighborhood stencils for two-dimensions are the five-cell \textit{von Neumann neighborhood} and the nine-cell \textit{Moore neighborhood}. %(Figure \ref{fig:neighborhoods}). 
+Each cell contains a finite set of cell states $\Sigma$ of size $K = |\Sigma|$ and a transition function $\Delta$ that maps a set of neighborhood configurations to the cell states: $\Delta: \Sigma^N \to \Sigma$. We typically characterize a particular class of cellular automata by the number of neighbors $N$ and the number of cell states $K$. 
 
-\begin{figure}[thp]
-\centering
-\includegraphics[width=0.75\textwidth]{mi96_fig3_neighborhoods}
-\caption[CA Neighborhood Stencils]{
-	(a) is the five-cell von Neumann neighborhood, (b) is the nine-cell Moore neighborhood. The gray cell is the one to be updated by a transition rule. Figure from \citeauthor{mi96}~\cite{mi96}.
-}
-\label{fig:neighborhoods}
-\end{figure}
+% \begin{figure}[thp]
+% \centering
+% \includegraphics[width=0.75\textwidth]{mi96_fig3_neighborhoods}
+% \caption[CA Neighborhood Stencils]{
+% 	(a) is the five-cell von Neumann neighborhood, (b) is the nine-cell Moore neighborhood. The gray cell is the one to be updated by a transition rule. Figure from \citeauthor{mi96}~\cite{mi96}.
+% }
+% \label{fig:neighborhoods}
+% \end{figure}
 
 \citeauthor{wf84} proposed a qualitative method for classifying CA automata behavior, with systems falling into one of four classes~\cite{mi96,wf84}:
 \begin{itemize}[noitemsep, nolistsep]
@@ -200,7 +200,8 @@ A common quantity used to measure the relative order in a CA system is \textit{S
 
 It has been shown that various CA systems can support universal computation~\cite{wf86}, but what are the particular characteristics that allow for computation to be possible? Computational constructs such as Turing machines and other equivalent entities are built upon three fundamentals that can be formulated in the dynamics of a CA system. The system must be able to support the \textit{storage} of information, with the ability to preserve information for arbitrary time periods. Information \textit{transmission} across long distances must also be possible in the environment. Finally, there must be some mechanism for information \textit{interaction} with the potential for information to be transformed or modified~\cite{la90}. These properties are necessary for any dynamical system, automata or otherwise, to have the capacity for computation, but are not sufficient. \citeauthor{la90} also establishes the notion of dynamical systems undergoing phase transitions between highly ordered to highly disordered dynamics, with the most interesting behavior occurring within the boundaries of this transition. This transition region is also where the three requisite properties of computation often occur. Thus, the hypothesis \citeauthor{la90} claims is that computation can spontaneously emerge and dominate the dynamics of a physical system when such a system is at or near such a \textit{critical} transition point~\cite{la90}: ``the edge of chaos.'' 
 
-\citeauthor{la90}'s primary method of investigation is a Monte Carlo sampling of two-dimensional CAs, comparing the relationship between the parameter $\lambda$ and the average dynamical behavior of the system, measured by entropy. From both qualitative and quantitative analyses, the most interesting action in two-dimensional CAs occurs in mid-range $\lambda$ values, where the \textit{transient lengths} before static space-time structures emerge is arbitrarily long. Low levels of $\lambda$ have short transient lengths before the CA crystallizes (Figure \ref{fig:order_trans}), and high levels of $\lambda$ have short transient lengths before the CA degenerates into chaos (Figure \ref{fig:chaos_trans}). Levels of $\lambda$ in the middle, however, are a ``sweet spot'' of entropy (Figure \ref{fig:long_trans}). Since information storage involves lowering entropy while transmission involves raising entropy, a balance must be struck in the overall system to support these foundations of computation. Through these experiments and observations, \citeauthor{la90} has established a bound on the complexity of dynamical systems; systems located near the edge of chaos exhibit a range of complex behavior that contain the foundations of computation. Thus, there is a narrow location in the $\lambda$ spectrum of dynamical systems where emergent computation can be discovered, with the maximum complexity occurring at $\lambda_c$ (Figure \ref{fig:lambda_trans}).
+\citeauthor{la90}'s primary method of investigation is a Monte Carlo sampling of two-dimensional CAs, comparing the relationship between the parameter $\lambda$ and the average dynamical behavior of the system, measured by entropy. From both qualitative and quantitative analyses, the most interesting action in two-dimensional CAs occurs in mid-range $\lambda$ values, where the \textit{transient lengths} before static space-time structures emerge is arbitrarily long. Low levels of $\lambda$ have short transient lengths before the CA crystallizes (Figure \ref{fig:order_trans}), and high levels of $\lambda$ have short transient lengths before the CA degenerates into chaos (Figure \ref{fig:chaos_trans}). Levels of $\lambda$ in the middle, however, are a ``sweet spot'' of entropy (Figure \ref{fig:long_trans}). Since information storage involves lowering entropy while transmission involves raising entropy, a balance must be struck in the overall system to support these foundations of computation. Through these experiments and observations, \citeauthor{la90} has established a bound on the complexity of dynamical systems; systems located near the edge of chaos exhibit a range of complex behavior that contain the foundations of computation. Thus, there is a narrow location in the $\lambda$ spectrum of dynamical systems where emergent computation can be discovered.
+%, with the maximum complexity occurring at $\lambda_c$ (Figure \ref{fig:lambda_trans}).
 
 \begin{figure}[htp]
 \centering
@@ -229,14 +230,14 @@ The progression of a one-dimensional $N=4$, $K=5$ cellular automaton with $\lamb
 \label{fig:long_trans}
 \end{figure}
 
-\begin{figure}[htp]
-\centering
-\includegraphics[width=0.5\textwidth]{la90_fig3_lambda_transient_len.png}
-\caption[Lambda and Transient Length]{
-Average transient length as a function of $\lambda$ for a 1D CA. The long transient lengths centered around $\lambda_c=0.5$ indicate the transition between ordered and disordered dynamics. Figure from \citeauthor{la90} \cite{la90}.
-}
-\label{fig:lambda_trans}
-\end{figure}
+% \begin{figure}[htp]
+% \centering
+% \includegraphics[width=0.5\textwidth]{la90_fig3_lambda_transient_len.png}
+% \caption[Lambda and Transient Length]{
+% Average transient length as a function of $\lambda$ for a 1D CA. The long transient lengths centered around $\lambda_c=0.5$ indicate the transition between ordered and disordered dynamics. Figure from \citeauthor{la90} \cite{la90}.
+% }
+% \label{fig:lambda_trans}
+% \end{figure}
 
 %Work has been done to pinpoint precisely where this transition point occurs, continuing along the parallels between CAs and transitions in physical systems. Utilizing mean field theory, theoretical approximations of the entropy against $\lambda$ in two-dimensional automata made by \citeauthor{wo90} closely match previous experimental results. As the number of total possible cell states approaches infinity, there is a sharp phase transition occurring at $\lambda=0.27$, akin to first-order transitions in actual physical systems~\cite{wo90}. Perhaps this is the critical $\lambda$ point for this particular class of CAs. These results show promise in the parallels between physical systems and the dynamic behavior of cellular automata. However, to investigate this in further detail, it may be necessary to identify other statistical properties in order to fully determine the phase transition point.
 
@@ -283,31 +284,31 @@ This method of applying updates allows us to only consider cells that could pote
 \label{subsec:GridGen}
 
 \subsubsection{Delaunay Triangulations and Voronoi Diagrams}
-The goal with building grids using Voronoi diagrams is to produce irregular grids that still respect Euclidean distance, as discussed in Section \ref{subsec:ModelVoronoiRep}. Given a set of \textit{generator points} $\{p_1, ..., p_n\}$ in the plane, a Voronoi polygon $V_k$ corresponding to a generator point $p_k$ consists of all points whose distance to $p_k$ is less than its distance to any other generator point. Thus, we can partition the plane into Voronoi polygons that correspond to every generator point, producing a \textit{Voronoi Diagram}. These polygons will serve as the cells in our CA simulations. 
+The goal with building grids using Voronoi diagrams is to produce irregular grids that still respect Euclidean distance. Given a set of \textit{generator points} $\{p_1, ..., p_n\}$ in the plane, a Voronoi polygon $V_k$ corresponding to a generator point $p_k$ consists of all points whose distance to $p_k$ is less than its distance to any other generator point. Thus, we can partition the plane into Voronoi polygons that correspond to every generator point, producing a \textit{Voronoi Diagram}. These polygons will serve as the cells in our CA simulations. 
 
-The first step in the process to generate a Voronoi-based grid is to produce generator points. We use \textit{Poisson Disk Sampling} to generate random points that are guaranteed to be at least some specified distance apart from each other~\cite{br07}. Points created by this method will avoid the clumping that can occur when a random uniform distribution is used, illustrated in Figure \ref{fig:pt_gen}.
+The first step in the process to generate a Voronoi-based grid is to produce generator points. We use \textit{Poisson Disk Sampling} to generate random points that are guaranteed to be at least some specified distance apart from each other~\cite{br07}. Points created by this method will avoid the ``clumping'' that can occur when a random uniform distribution is used.
 
-\begin{figure}[htp]
-\centering
-\begin{subfigure}[t]{0.6\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch3_figs/uniform_cloud_edited}
-  \caption{Uniform Distribution}
-  \label{fig:penrose_types:kd}
-\end{subfigure}
+% \begin{figure}[htp]
+% \centering
+% \begin{subfigure}[t]{0.6\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch3_figs/uniform_cloud_edited}
+%   \caption{Uniform Distribution}
+%   \label{fig:penrose_types:kd}
+% \end{subfigure}
 
-\begin{subfigure}[t]{0.6\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch3_figs/poisson_cloud_edited}
-  \caption{Poisson Disk Sampling}
-  \label{fig:penrose_types:tt}
-\end{subfigure}
+% \begin{subfigure}[t]{0.6\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch3_figs/poisson_cloud_edited}
+%   \caption{Poisson Disk Sampling}
+%   \label{fig:penrose_types:tt}
+% \end{subfigure}
 
-\caption[Random Point Generation]{
-  Representative point distributions when utilizing uniform random distribution and Poisson Disk sampling. Notice how points can ``clump'' when using a uniform distribution while points are more evenly spaced when using Poisson Disk Sampling.
-}
-\label{fig:pt_gen}
-\end{figure}
+% \caption[Random Point Generation]{
+%   Representative point distributions when utilizing uniform random distribution and Poisson Disk sampling. Notice how points can ``clump'' when using a uniform distribution while points are more evenly spaced when using Poisson Disk Sampling.
+% }
+% \label{fig:pt_gen}
+% \end{figure}
 
 Once we have a set of generator points, we construct the dual graph of the Voronoi Diagram, known as the \textit{Delaunay Triangulation}. The Delaunay Triangulation of a set of points $\{p_1, ..., p_n\}$ in the plane is a triangulation such that no point $p_k$ resides inside the circumcircle of a triangle. We utilize the \textit{Flip Algorithm} to construct the Delaunay Triangulation; though the flip algorithm is not the fastest Delaunay Triangulation algorithm, it is straightforward to implement, requires no auxiliary data structures, and performs well enough for our purposes.
 
@@ -418,16 +419,16 @@ Our extensions of majority task experiments will focus on the \textit{local majo
 \subsubsection*{Experimental Setup}
 We mirror \citeauthor{me07}'s experimental setup in order to compare our results with theirs. For regular grids, a 15 by 15 grid (225 total cells) is utilized with periodic boundaries. We begin with a 1:99 ON:OFF ratio, incrementing by 1 up to 99:1. The simulation is run for a maximum of 450 time steps, recording only completely correct classification. 1,000 random grid configurations are used for every starting ratio, giving a total of 99,000 trials. A single complete run of all the trials takes approximately 25 minutes in our simulation system.
 
-We use Delaunay and Voronoi generation methods to generate our irregular grids. Our experiments utilize both a grid created through Poisson Disk generator points (Figure~\ref{fig:lm_delaunay}) as well as a grid derived from a plant stomatal array. For the stomatal array, we begin with an image of the stomata and drop points where the stoma are located. We then utilize these points as generator points for a Delaunay triangulation. The entire process is pictured in Figure~\ref{fig:stoma_graph_gen}.
+We use Delaunay and Voronoi generation methods to generate our irregular grids. Our experiments utilize both a grid created through Poisson Disk generator points as well as a grid derived from a plant stomatal array. For the stomatal array, we begin with an image of the stomata and drop points where the stoma are located. We then utilize these points as generator points for a Delaunay triangulation. The entire process is pictured in Figure~\ref{fig:stoma_graph_gen}.
 
-\begin{figure}[htp]
-\centering
-\includegraphics[width=\textwidth]{ch5_figs/lm_delaunay}
-\caption[Irregular Delaunay Grid for Majority Task]{
-  The Delaunay Triangulation (and thus connectivity graph) for our generated irregular grid. Dimensions for the Poisson Disk sampling were chosen so that the cell count would match the 15 by 15 size of the baseline regular grid as close as possible.
-}
-\label{fig:lm_delaunay}
-\end{figure}
+% \begin{figure}[htp]
+% \centering
+% \includegraphics[width=\textwidth]{ch5_figs/lm_delaunay}
+% \caption[Irregular Delaunay Grid for Majority Task]{
+%   The Delaunay Triangulation (and thus connectivity graph) for our generated irregular grid. Dimensions for the Poisson Disk sampling were chosen so that the cell count would match the 15 by 15 size of the baseline regular grid as close as possible.
+% }
+% \label{fig:lm_delaunay}
+% \end{figure}
 
 
 \begin{figure}[htp]
@@ -595,7 +596,7 @@ The \textit{table walk-through} method for generating transition tables begins w
 
 The \textit{random table} method for generating transition tables utilizes $\lambda$ as a sampling probability. A $\Delta$ table entry is mapped to the quiescent state with probability $1 - \lambda$, while a non-quiescent state is chosen uniformly from the other possible states with probability $\lambda$~\cite{la90}. The LW Profile generated from the random table method is pictured in Figure~\ref{fig:lw_profile_rand}. Also note that all $\Delta$ transition tables possess \textit{planar isotropy} and \textit{strong quiescence} as detailed in Chapter~\ref{subsec:ch3_lamb}.
 
-Entropy is calculated using the equations shown in Appendix~\ref{appA:entrop}. However, entropy calculations are made only for the asymptotic behavior of a given CA simulation: each CA simulation is run for 1,000 time steps, with entropy only measured after time step 500. So if a particular CA run has a lifetime of less than 500, its entropy value will be 0. This manner of calculating asymptotic entropy leads to numerous entropy measurements of 0, as pictured in both versions of the LW Profile. Also note that for $K=8, N=5$ CA, the maximum entropy is 3 with this maximum value occurring with a $\lambda$ value of 0.875 (Appendix~\ref{appB:max_H}). Thus, all experiments with $K=8, N=5$ CA consider a range of $\lambda$ values from $\lambda = 0.0$ to $\lambda = 0.88$. 
+Entropy is calculated using the equations shown in Appendix~\ref{appA:entrop}. However, entropy calculations are made only for the asymptotic behavior of a given CA simulation: each CA simulation is run for 1,000 time steps, with entropy only measured after time step 500. So if a particular CA run has a lifetime of less than 500, its entropy value will be 0. This manner of calculating asymptotic entropy leads to numerous entropy measurements of 0, as pictured in both versions of the LW Profile. Also note that for $K=8, N=5$ CA, the maximum entropy is 3 with this maximum value occurring with a $\lambda$ value of 0.875. Thus, all experiments with $K=8, N=5$ CA consider a range of $\lambda$ values from $\lambda = 0.0$ to $\lambda = 0.88$. 
 
 \begin{figure}[htp]
 \centering
@@ -626,7 +627,7 @@ Also observe that entropy values converge rapidly when $\lambda > 0.6$, an indic
 
 \subsubsection*{Experimental Setup}
 
-We utilize the table walk-through method when varying $\lambda$ for our experiments, as both line and scatter plots can be generated from the resulting data. Though \citeauthor{wo90} run their CA simulations to 1,000 time steps, we saw no difference in the shape of the LW Profiles between trials with a maximum time step of 500 and trials with a maximum time step of 1,000 (Figure~\ref{fig:lw_reg_short_long}), so in the interest of efficiency we run our experiments with a maximum of 500 time steps with an asymptotic threshold of 250 time steps. 100 individual table walk-through runs for $K=8, N=5$ CA are made, incrementing $\lambda$ from $0.0$ to $0.88$. Since we are examining the $K=8, N=5$ CA class, we require the cells in our grid to have four neighbors. Thus, grids generated with the Voronoi Quadrilateral technique as discussed in Chapter~\ref{subsec:vquad} are appropriate irregular spaces for considering these CA. We apply the VQuad grid generation technique to a Voronoi diagram generated by a Poisson Disk distribution of generator points and to the Voronoi diagram produced by the stomatal array (Figure~\ref{fig:vquad_stoma_gen}). Additionally, we also examine Penrose grids utilizing the generalized von Neumann neighborhood stencil, which also produces neighborhoods of $N=5$. Both Kite/Dart and Thin/Thick Rhomb grids are considered, as shown in Figure~\ref{fig:penrose_circ}.
+We utilize the table walk-through method when varying $\lambda$ for our experiments, as both line and scatter plots can be generated from the resulting data. Though \citeauthor{wo90} run their CA simulations to 1,000 time steps, we saw no difference in the shape of the LW Profiles between trials with a maximum time step of 500 and trials with a maximum time step of 1,000, so in the interest of efficiency we run our experiments with a maximum of 500 time steps with an asymptotic threshold of 250 time steps. 100 individual table walk-through runs for $K=8, N=5$ CA are made, incrementing $\lambda$ from $0.0$ to $0.88$. Since we are examining the $K=8, N=5$ CA class, we require the cells in our grid to have four neighbors. Thus, grids generated with the Voronoi Quadrilateral technique as discussed in Chapter~\ref{subsec:vquad} are appropriate irregular spaces for considering these CA. We apply the VQuad grid generation technique to a Voronoi diagram generated by a Poisson Disk distribution of generator points and to the Voronoi diagram produced by the stomatal array (Figure~\ref{fig:vquad_stoma_gen}). Additionally, we also examine Penrose grids utilizing the generalized von Neumann neighborhood stencil, which also produces neighborhoods of $N=5$. Both Kite/Dart and Thin/Thick Rhomb grids are considered, as shown in Figure~\ref{fig:penrose_circ}.
 
 With irregular grids, inducing periodic boundary conditions is not obvious, so boundary cell neighborhoods are ``completed'' by inserting quiescent states. Note that this decision could potentially skew the resultant entropy measurements lower, but we have seen some functional equivalence between periodic and non-periodic grids previously with our experiments in Chapter~\ref{sec:local_maj}. Neighborhood cells are ordered clockwise from the origin; since the $\lambda$ rule tables produced are isotropic, only the relative ordering of neighborhood cells matter. Cell state frequencies are measured at every time step, so entropy values are computed as an average over the data points collected after the asymptotic threshold.
 
@@ -648,31 +649,31 @@ An illustration of the Voronoi representation of the stomatal array from Figure~
 \label{fig:vquad_stoma_gen}
 \end{figure}
 
-\begin{figure}[htp]
-\centering
-  \begin{subfigure}[t]{0.65\textwidth}
-  \includegraphics[width=\textwidth]{ch6_figs/reg_entropy_500_scatter}
-  \caption{Short Simulation ($t_{max} = 500$) Langton-Wootters Profile}
-  \label{fig:lw_profile_short}
-  \end{subfigure}
-  ~
-  \begin{subfigure}[t]{0.65\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/reg_entropy_1000_scatter}
-  \caption{Long Simulation ($t_{max} = 1000$) Langton-Wootters Profile}
-  \label{fig:lw_profile_long}
-  \end{subfigure}
-\caption[Langton-Wootters Profile for Short and Long Simulations]{
-  LW Profiles for both short and long simulations. The overall shape and distribution of data points throughout the graph are largely identical. Thus, it appears that equivalent asymptotic behavior can be achieved within different time scales. Note that in our scatter plots, darker dots indicate higher frequency of values. So, we can see both the tight convergence of entropy at high $\lambda$ values and the high frequency of runs that do not reach the asymptotic threshold, resulting in an entropy value of 0.
-}
-\label{fig:lw_reg_short_long}
-\end{figure}
+% \begin{figure}[htp]
+% \centering
+%   \begin{subfigure}[t]{0.65\textwidth}
+%   \includegraphics[width=\textwidth]{ch6_figs/reg_entropy_500_scatter}
+%   \caption{Short Simulation ($t_{max} = 500$) Langton-Wootters Profile}
+%   \label{fig:lw_profile_short}
+%   \end{subfigure}
+%   ~
+%   \begin{subfigure}[t]{0.65\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/reg_entropy_1000_scatter}
+%   \caption{Long Simulation ($t_{max} = 1000$) Langton-Wootters Profile}
+%   \label{fig:lw_profile_long}
+%   \end{subfigure}
+% \caption[Langton-Wootters Profile for Short and Long Simulations]{
+%   LW Profiles for both short and long simulations. The overall shape and distribution of data points throughout the graph are largely identical. Thus, it appears that equivalent asymptotic behavior can be achieved within different time scales. Note that in our scatter plots, darker dots indicate higher frequency of values. So, we can see both the tight convergence of entropy at high $\lambda$ values and the high frequency of runs that do not reach the asymptotic threshold, resulting in an entropy value of 0.
+% }
+% \label{fig:lw_reg_short_long}
+% \end{figure}
 
 \subsection*{Results}
 
 The LW Profiles for our Poisson Disk and Stomatal Voronoi Quad grids are pictured in Figure~\ref{fig:vor_lw_profile} and Figure~\ref{fig:stoma_lw_profile} respectively. In both cases, despite the irregularity in the cell orientation and the non-periodic boundary conditions, we see a remarkably similar shape in the LW Profile for the Voronoi Quad grids. Examination of Figures \ref{fig:vor_lw_run} and \ref{fig:stoma_lw_run} show all of the individual CA runs experiencing a significant jump in entropy values at some point, evidence of a transition event. The corresponding scatter plots (Figures \ref{fig:vor_lw_scatter} and \ref{fig:stoma_lw_scatter}) of these graphs show that the transition gap in $0 < H \le 0.85$ is also sparsely populated. There appear to be slightly more data points found in the gap for the stoma grid scatter plot compared to the Poisson Disk grid plot; we speculate that the size of the grid may have an influence on a CA's ability to compute, and the Poisson Disk grid is significantly larger than the stomatal grid. 
 
-LW Profiles for the Penrose tilings are pictured in Figure~\ref{fig:penrose_lw_profile}. Though the overall shape of the curves are still in line with the baseline profile, we see some small deviations in the LW Profile for Rhomb tilings, shown in Figure~\ref{fig:crh_lw_profile}. First, we see that the transition gap contains a fair amount of data points, spanning a much larger range of $\lambda$ than any of the other grids we have examined with points in the gap found at $\lambda < 0.2$. There is also more variance in the data points above the transition gap, producing a slightly looser convergence of entropy as $\lambda$ increases. These discrepancies are surprising given our Penrose Life experiments in Chapter~\ref{ch:penrose} showing that the Rhomb tilings supported longer lived structures, which suggests that the grids would be better suited for supporting complex behavior. Thus, there is a need for a way to quantify how these graphs may differ from one another, as visual inspection is not an adequate measure of such differences. Overall however, we see entropy profile behavior equivalent to those seen in the baseline experiments as we vary $\lambda$ across all of these irregular grids, suggesting a functional equivalence between irregular, non-periodic quadrilateral grids and their regular, periodic square counterparts. With the preservation of both the overall shape and a well-defined transition gap of the LW Profiles we have examined, it appears that complex behavior can be supported in all of these irregular quadrilateral grids.
+%LW Profiles for the Penrose tilings are pictured in Figure~\ref{fig:penrose_lw_profile}. Though the overall shape of the curves are still in line with the baseline profile, we see some small deviations in the LW Profile for Rhomb tilings, shown in Figure~\ref{fig:crh_lw_profile}. First, we see that the transition gap contains a fair amount of data points, spanning a much larger range of $\lambda$ than any of the other grids we have examined with points in the gap found at $\lambda < 0.2$. There is also more variance in the data points above the transition gap, producing a slightly looser convergence of entropy as $\lambda$ increases. These discrepancies are surprising given our Penrose Life experiments in Chapter~\ref{ch:penrose} showing that the Rhomb tilings supported longer lived structures, which suggests that the grids would be better suited for supporting complex behavior. Thus, there is a need for a way to quantify how these graphs may differ from one another, as visual inspection is not an adequate measure of such differences. Overall however, we see entropy profile behavior equivalent to those seen in the baseline experiments as we vary $\lambda$ across all of these irregular grids, suggesting a functional equivalence between irregular, non-periodic quadrilateral grids and their regular, periodic square counterparts. With the preservation of both the overall shape and a well-defined transition gap of the LW Profiles we have examined, it appears that complex behavior can be supported in all of these irregular quadrilateral grids.
 
 \begin{figure}[htp]
 \centering
@@ -714,29 +715,29 @@ LW Profiles for the Penrose tilings are pictured in Figure~\ref{fig:penrose_lw_p
 \label{fig:stoma_lw_profile}
 \end{figure}
 
-\begin{figure}[htp]
-\centering
-\begin{subfigure}[t]{0.65\textwidth}
-  \includegraphics[width=\textwidth]{ch6_figs/ckd_entropy_scatter}
-  \caption{Kite/Dart Langton-Wootters Profile}
-  \label{fig:ckd_lw_profile}
-\end{subfigure}
-~
-\begin{subfigure}[t]{0.65\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/crh_entropy_scatter}
-  \caption{Thin/Thick Rhombus Langton-Wootters Profile}
-  \label{fig:crh_lw_profile}
-  \end{subfigure}
-\caption[Penrose Langton-Wootters Profile]{
-  The LW Profile for both types of Penrose grids. Though both plots maintain the same overall shape as the baseline LW Profile, there appears to be significantly more noise throughout the entire graph for the Rhomb grid, with more points within the transition gap and looser convergence to the overall profile shape at entropy values above the transition gap. This is surprising given that our Penrose Life experiments showed the Rhomb tilings supporting longer living Life structures than the Kites/Dart tiling, suggesting that perhaps the Rhomb tilings would be better suited for supporting complex CA behavior in general.
-}
-\label{fig:penrose_lw_profile}
-\end{figure}
+% \begin{figure}[htp]
+% \centering
+% \begin{subfigure}[t]{0.65\textwidth}
+%   \includegraphics[width=\textwidth]{ch6_figs/ckd_entropy_scatter}
+%   \caption{Kite/Dart Langton-Wootters Profile}
+%   \label{fig:ckd_lw_profile}
+% \end{subfigure}
+% ~
+% \begin{subfigure}[t]{0.65\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/crh_entropy_scatter}
+%   \caption{Thin/Thick Rhombus Langton-Wootters Profile}
+%   \label{fig:crh_lw_profile}
+%   \end{subfigure}
+% \caption[Penrose Langton-Wootters Profile]{
+%   The LW Profile for both types of Penrose grids. Though both plots maintain the same overall shape as the baseline LW Profile, there appears to be significantly more noise throughout the entire graph for the Rhomb grid, with more points within the transition gap and looser convergence to the overall profile shape at entropy values above the transition gap. This is surprising given that our Penrose Life experiments showed the Rhomb tilings supporting longer living Life structures than the Kites/Dart tiling, suggesting that perhaps the Rhomb tilings would be better suited for supporting complex CA behavior in general.
+% }
+% \label{fig:penrose_lw_profile}
+% \end{figure}
 
 \subsection{$\lambda$ Profile of Degenerated Grids}
 
-Now that some equivalence in CA behavior has been established for our irregular grids, we want to examine how these grids respond to degradation. We expose CA systems to other forms of spatial irregularity through introducing ``internal'' boundaries by removing cells and through isolating local regions by reducing neighborhood connectivity. Our goal is to examine how robust cellular automata can be when facing spatial deterioration, another form of environmental noise (see Chapter~\ref{sec:Robust}) natural systems have to combat.
+Now that some equivalence in CA behavior has been established for our irregular grids, we want to examine how these grids respond to degradation. We expose CA systems to other forms of spatial irregularity through introducing ``internal'' boundaries by removing cells and through isolating local regions by reducing neighborhood connectivity. Our goal is to examine how robust cellular automata can be when facing spatial deterioration, another form of environmental noise natural systems have to combat.
 
 \subsection{Generator Point Degeneration}
 \label{subsec:ch6_gen_pt_degen}
@@ -820,7 +821,7 @@ The resulting LW Profiles are pictured in Figure~\ref{fig:lw_gen_pt_degen}. We s
 In the previous section, we degraded a CA grid by randomly deleting cells from it. In order to more tightly control how spatial degeneration occurred throughout the grid, we utilize the \textit{crosshatching degeneration} method described in Chapter~\ref{subsec:ch_degen}. With this technique, we can vary how isolated local regions are within the grid without having to explicitly remove cells. This allows us to investigate the role of both overall grid size and connectivity in supporting complex CA behavior.
 
 \subsubsection*{Experimental Setup}
-Crosshatching degeneration is applied to our stomatal VQuad grid with crosshatch widths of $w=10,15,20,25,30$. The edge removal probability $p$ ranges from $p=0.05$ to $p=1.0$, in increments of $0.05$. We degenerate the grid for each $\lambda$ trial, producing new crosshatchings for every run, with examples in Figures \ref{fig:ch_w10_grid}, \ref{fig:ch_w20_grid}, and \ref{fig:ch_w30_grid}. Otherwise, $\lambda$ experiments are run in an identical manner as the previous two sections, with 100 trials varying $\lambda$ from $\lambda=0.01$ to $\lambda=0.88$.
+Crosshatching degeneration is applied to our stomatal VQuad grid with crosshatch widths of $w=10,15,20,25,30$. The edge removal probability $p$ ranges from $p=0.05$ to $p=1.0$, in increments of $0.05$. We degenerate the grid for each $\lambda$ trial, producing new crosshatchings for every run, with examples in Figures \ref{fig:ch_w10_grid} and \ref{fig:ch_w30_grid}. Otherwise, $\lambda$ experiments are run in an identical manner as the previous two sections, with 100 trials varying $\lambda$ from $\lambda=0.01$ to $\lambda=0.88$.
 
 \begin{figure}[htp]
 \centering
@@ -857,40 +858,40 @@ Crosshatching degeneration is applied to our stomatal VQuad grid with crosshatch
 \label{fig:ch_w10_grid}
 \end{figure}
 
-\begin{figure}[htp]
-\centering
-\begin{subfigure}[t]{0.45\textwidth}
-  \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p25_w20}
-  \caption{Crosshatch Degeneration, $w=20$, $p=0.25$}
+% \begin{figure}[htp]
+% \centering
+% \begin{subfigure}[t]{0.45\textwidth}
+%   \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p25_w20}
+%   \caption{Crosshatch Degeneration, $w=20$, $p=0.25$}
 
-\end{subfigure}
-~
-\begin{subfigure}[t]{0.45\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p50_w20}
-  \caption{Crosshatch Degeneration, $w=20$, $p=0.50$}
+% \end{subfigure}
+% ~
+% \begin{subfigure}[t]{0.45\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p50_w20}
+%   \caption{Crosshatch Degeneration, $w=20$, $p=0.50$}
 
-  \end{subfigure}
+%   \end{subfigure}
 
-\begin{subfigure}[t]{0.45\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p75_w20}
-  \caption{Crosshatch Degeneration, $w=20$, $p=0.75$}
+% \begin{subfigure}[t]{0.45\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p75_w20}
+%   \caption{Crosshatch Degeneration, $w=20$, $p=0.75$}
 
-  \end{subfigure}
-~
-\begin{subfigure}[t]{0.45\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p100_w20}
-  \caption{Crosshatch Degeneration, $w=20$, $p=1.0$}
+%   \end{subfigure}
+% ~
+% \begin{subfigure}[t]{0.45\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/cross_hatch_p100_w20}
+%   \caption{Crosshatch Degeneration, $w=20$, $p=1.0$}
 
-  \end{subfigure}
+%   \end{subfigure}
 
-\caption[Crosshatch Degeneration, $w=20$]{
-  Representative grids for crosshatching degeneration $w=20$ applied to the stomatal VQuad grid. As opposed to the $w=10$ case, when $p=1.0$ the crosshatchings partition the grid into clear subregion ``boxes.''
-}
-\label{fig:ch_w20_grid}
-\end{figure}
+% \caption[Crosshatch Degeneration, $w=20$]{
+%   Representative grids for crosshatching degeneration $w=20$ applied to the stomatal VQuad grid. As opposed to the $w=10$ case, when $p=1.0$ the crosshatchings partition the grid into clear subregion ``boxes.''
+% }
+% \label{fig:ch_w20_grid}
+% \end{figure}
 
 \begin{figure}[htp]
 \centering
@@ -922,17 +923,17 @@ Crosshatching degeneration is applied to our stomatal VQuad grid with crosshatch
   \end{subfigure}
 
 \caption[Crosshatch Degeneration, $w=30$]{
-  Representative grids for crosshatching degeneration $w=20$ applied to the stomatal VQuad grid. Again when $p=1.0$, the crosshatchings partition the grid into square subregions.
-}
+  Representative grids for crosshatching degeneration $w=30$ applied to the stomatal VQuad grid. As opposed to the $w=10$ case, when $p=1.0$ the crosshatchings partition the grid into clear subregion ``boxes.''
+  }
 \label{fig:ch_w30_grid}
 \end{figure}
 
 
 \subsubsection*{Qualitative Analysis}
 
-Representative entropy profiles are shown in Figures \ref{fig:lw_ch_10}, \ref{fig:lw_ch_20}, and \ref{fig:lw_ch_30} for \linebreak $w=10,20,30$, respectively. In the $w=10$ case, we see massive degeneration of the structure of the grid in the $p=0.75$ (Figure~\ref{fig:lw_w10_p75}) and $p=1.0$ (Figure~\ref{fig:lw_w10_p100}) graphs, with a loss of both the convergence of entropy values as well as the well-defined transition gap; if we look back to Figure~\ref{fig:ch_w10_grid}, we see that at $p=0.75$ and $p=1.0$ there is widespread edge removal across the entire grid with very little contiguous grid regions. This sort of damage is too much for a CA to overcome, and critical transitions are not observed on these grids. 
+Representative entropy profiles are shown in Figures \ref{fig:lw_ch_10}, and \ref{fig:lw_ch_30} for \linebreak $w=10,30$, respectively. In the $w=10$ case, we see massive degeneration of the structure of the grid in the $p=0.75$ (Figure~\ref{fig:lw_w10_p75}) and $p=1.0$ (Figure~\ref{fig:lw_w10_p100}) graphs, with a loss of both the convergence of entropy values as well as the well-defined transition gap; if we look back to Figure~\ref{fig:ch_w10_grid}, we see that at $p=0.75$ and $p=1.0$ there is widespread edge removal across the entire grid with very little contiguous grid regions. This sort of damage is too much for a CA to overcome, and critical transitions are not observed on these grids. 
 
-As the width of the crosshatching increases however, we see much more robust behavior. When $w=20$, we see preservation of the baseline LW Profile structure across all $p$ values, with only a slight weakening of convergence when $w=1.0$ (Figure~\ref{fig:lw_w20_p100}). Again the entropy profile structure is maintained when $w=30$, with tight convergence even when $w=1.0$. As the crosshatching width increases, there are fewer edges being removed from the grid, and larger contiguous subregions of the grid are preserved. Thus, we expect CA behavior to be more robust to grid degradation as the crosshatching width increases. Though we have evaluated these results through visual inspection of the LW Profiles, we will explore a more quantitative manner of assessing CA behavior on damaged grids.
+As the width of the crosshatching increases however, we see much more robust behavior. When $w=20$, we see preservation of the baseline LW Profile structure across all $p$ values, with only a slight weakening of convergence when $w=1.0$. Again the entropy profile structure is maintained when $w=30$, with tight convergence even when $w=1.0$. As the crosshatching width increases, there are fewer edges being removed from the grid, and larger contiguous subregions of the grid are preserved. Thus, we expect CA behavior to be more robust to grid degradation as the crosshatching width increases. Though we have evaluated these results through visual inspection of the LW Profiles, we will explore a more quantitative manner of assessing CA behavior on damaged grids.
 
 \begin{figure}[htp]
 \centering
@@ -969,40 +970,40 @@ As the width of the crosshatching increases however, we see much more robust beh
 \label{fig:lw_ch_10}
 \end{figure}
 
-\begin{figure}[htp]
-\centering
-\begin{subfigure}[t]{0.4\textwidth}
-  \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p25_entropy_scatter}
-  \caption{Crosshatch Degen, $w=20$, $p=0.25$}
+% \begin{figure}[htp]
+% \centering
+% \begin{subfigure}[t]{0.4\textwidth}
+%   \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p25_entropy_scatter}
+%   \caption{Crosshatch Degen, $w=20$, $p=0.25$}
 
-\end{subfigure}
-~
-\begin{subfigure}[t]{0.4\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p50_entropy_scatter}
-  \caption{Crosshatch Degen, $w=20$, $p=0.50$}
+% \end{subfigure}
+% ~
+% \begin{subfigure}[t]{0.4\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p50_entropy_scatter}
+%   \caption{Crosshatch Degen, $w=20$, $p=0.50$}
 
-\end{subfigure}
+% \end{subfigure}
 
-\begin{subfigure}[t]{0.4\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p75_entropy_scatter}
-  \caption{Crosshatch Degen, $w=20$, $p=0.75$}
+% \begin{subfigure}[t]{0.4\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p75_entropy_scatter}
+%   \caption{Crosshatch Degen, $w=20$, $p=0.75$}
 
-  \end{subfigure}
-~
-\begin{subfigure}[t]{0.4\textwidth}
-  \centering
-  \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p100_entropy_scatter}
-  \caption{Crosshatch Degen, $w=20$, $p=1.0$}
-  \label{fig:lw_w20_p100}
-  \end{subfigure}
+%   \end{subfigure}
+% ~
+% \begin{subfigure}[t]{0.4\textwidth}
+%   \centering
+%   \includegraphics[width=\textwidth]{ch6_figs/ch_w20_p100_entropy_scatter}
+%   \caption{Crosshatch Degen, $w=20$, $p=1.0$}
+%   \label{fig:lw_w20_p100}
+%   \end{subfigure}
 
-\caption[Crosshatch Langton-Wootters Profile, $w=20$]{
-  LW Profile for $w=20$ Crosshatch Degeneration. We see a much better maintenance of the baseline structure through all $p$ compared to the $w=10$ case. We see a fair amount of noise in the transition gap throughout the four graphs, but the gap itself is well-defined in every case. Only at $p=1.0$ do we also see some ``sagging'' convergence of higher entropy values. Overall, CA systems appear able to perform adequately even with some subregions of the grid completely isolated from one another, provided that the subregions themselves are adequately large.
-}
-\label{fig:lw_ch_20}
-\end{figure}
+% \caption[Crosshatch Langton-Wootters Profile, $w=20$]{
+%   LW Profile for $w=20$ Crosshatch Degeneration. We see a much better maintenance of the baseline structure through all $p$ compared to the $w=10$ case. We see a fair amount of noise in the transition gap throughout the four graphs, but the gap itself is well-defined in every case. Only at $p=1.0$ do we also see some ``sagging'' convergence of higher entropy values. Overall, CA systems appear able to perform adequately even with some subregions of the grid completely isolated from one another, provided that the subregions themselves are adequately large.
+% }
+% \label{fig:lw_ch_20}
+% \end{figure}
 
 \begin{figure}[htp]
 \centering
@@ -1034,7 +1035,9 @@ As the width of the crosshatching increases however, we see much more robust beh
   \end{subfigure}
 
 \caption[Crosshatch Langton-Wootters Profile, $w=30$]{
-  LW Profile for $w=30$ Crosshatch Degeneration. Again, overall structure of the entropy profile is maintained at all $p$, with the only deviations being data points observed in the transition gap. We see tight convergence of entropy values in all the graphs, even when $p=1.0$.  It appears that larger crosshatching widths impact the behavior of CA systems less; this is unsurprising as there are less edges removed from the grid and larger subregions being created as a result of the wider width.
+  LW Profile for $w=30$ Crosshatch Degeneration. We see a much better maintenance of the baseline structure through all $p$ compared to the $w=10$ case. We see a fair amount of noise in the transition gap throughout the four graphs, but the gap itself is well-defined in every case. Only at $p=1.0$ do we also see some ``sagging'' convergence of higher entropy values. Overall, CA systems appear able to perform adequately even with some subregions of the grid completely isolated from one another, provided that the subregions themselves are adequately large.
+
+  %Again, overall structure of the entropy profile is maintained at all $p$, with the only deviations being data points observed in the transition gap. We see tight convergence of entropy values in all the graphs, even when $p=1.0$.  It appears that larger crosshatching widths impact the behavior of CA systems less; this is unsurprising as there are less edges removed from the grid and larger subregions being created as a result of the wider width.
 }
 
 \label{fig:lw_ch_30}
@@ -1157,7 +1160,7 @@ H = -\left[ v \log v + 7\left(\frac{1-v}{7}\right)\log\left(\frac{1-v}{7}\right)
 
 \processdelayedfloats
 
-\newpage
+\clearpage
 
 \bibliographystyle{plainnat}
 \bibliography{references}

@@ -9,10 +9,17 @@
 
 __More recent entries are at the top.__
 
+
+##11-17-2016
+
+Tony's Work
+- Removed 8 pages worth of figures, now at 30 figures
+- Compressed parts of Chapter 6, now at 17 pages of text
+
 ##11-15-2016
 
 Tony's Work:
-- Compressed System Design to 2.5 pages, total 18 pages of text
+- Compressed System Design to 2.5 pages, total 18d  pages of text
 - Began some work with Power Law Spectral Density (me07, pe04)
 
 Thoughts:
