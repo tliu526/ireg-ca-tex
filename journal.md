@@ -3,12 +3,23 @@
 ##"Deadlines" (Tentative)
 - Mid-December 2016: Compressed paper complete
 - January 2017: Feedback and review
-- February 2017: Abstract for CCS complete 
-
-
+- February 2017: Abstract for CCS complete
 
 __More recent entries are at the top.__
 
+
+##12-10-2016
+ - Compressed Introduction to 1 page
+ - Rewrote Section 2.4 and Previous Work Summary
+
+##12-6-2016
+ - Ran initial Power Law experiments
+
+##12-1-2016
+ - Implemented Power Law metrics in CA Simulator
+
+##11-20-2016
+ - Set up local work environment for additional experiments/calculations
 
 ##11-17-2016
 
@@ -19,7 +30,7 @@ Tony's Work
 ##11-15-2016
 
 Tony's Work:
-- Compressed System Design to 2.5 pages, total 18d  pages of text
+- Compressed System Design to 2.5 pages, total 18 pages of text
 - Began some work with Power Law Spectral Density (me07, pe04)
 
 Thoughts:

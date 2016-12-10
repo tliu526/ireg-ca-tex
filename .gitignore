@@ -8,6 +8,7 @@
 *.fff
 *.synctex.gz
 *.lof
+*.fls
 
 # Output files
 *.pdf
