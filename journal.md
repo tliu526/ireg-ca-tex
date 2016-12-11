@@ -11,6 +11,8 @@ __More recent entries are at the top.__
 ##12-10-2016
  - Compressed Introduction to 1 page
  - Rewrote Section 2.4 and Previous Work Summary
+ - Reformatted Sections and subsections
+ - compressed Figures, down to 23
 
 ##12-6-2016
  - Ran initial Power Law experiments
